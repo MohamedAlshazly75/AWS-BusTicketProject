@@ -56,11 +56,11 @@ cost-efficient application.
 ### 1. DynamoDB
 
 -   Create a table named **`BusTickets`**
--   Primary Key: `TicketID` (String)
+-   Primary Key: `ticketID` (String)
 
 ### 2. Lambda Function
 
--   Create a new Lambda function in AWS Console (Python 3.9+ runtime).
+-   Create a new Lambda function in AWS Console (Python 3.12 runtime).
 
 -   Upload `lambda_function.py` as a deployment package.
 
