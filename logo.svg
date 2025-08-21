@@ -1,0 +1,10 @@
+<svg width="140" height="36" viewBox="0 0 280 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GoBus">
+  <rect rx="8" ry="8" x="0" y="0" width="280" height="72" fill="#1f4e79"/>
+  <g fill="#fff" font-family="Arial,Helvetica,sans-serif">
+    <text x="20" y="45" font-size="30" font-weight="700">Go</text>
+    <text x="80" y="45" font-size="30">Bus</text>
+  </g>
+  <circle cx="220" cy="50" r="8" fill="#fff"/>
+  <circle cx="250" cy="50" r="8" fill="#fff"/>
+  <rect x="160" y="18" width="90" height="20" rx="4" fill="#fff" opacity="0.9"/>
+</svg>

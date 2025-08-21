@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bus Ticket Booking</title>
+  <style>
+    :root{
+      --brand:#1f4e79;
+      --accent:#ff7f32;
+      --bg:#f6f8fb;
+      --text:#1f2633;
+      --muted:#6b7280;
+      --ok:#22a06b;
+      --err:#c53030;
+      --card:#ffffff;
+      --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,Ubuntu,"Helvetica Neue",sans-serif;
+      background: linear-gradient(135deg, var(--bg), #eef2f7);
+      color:var(--text);
+    }
+    header{
+      background:var(--card);
+      border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:10;
+    }
+    .wrap{max-width:980px; margin:0 auto; padding:20px}
+    .brand{display:flex; align-items:center; gap:14px;}
+    .brand img{height:36px; width:auto}
+    .brand h1{font-size:20px; margin:0; color:var(--brand)}
+    .hero{
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap:28px;
+      align-items:stretch;
+      padding:30px 0;
+    }
+    @media (max-width: 860px){
+      .hero{grid-template-columns:1fr}
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.05);
+    }
+    .card .pad{padding:22px}
+    h2{margin:0 0 12px 0; font-size:22px}
+    p.lead{margin:0; color:var(--muted)}
+    form label{display:block; font-weight:600; margin:14px 0 6px}
+    form input, form select{
+      width:100%;
+      padding:12px 12px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#fff;
+      outline:none;
+      transition: box-shadow .15s ease,border-color .15s ease;
+      font-size:14px;
+    }
+    form input:focus, form select:focus{box-shadow:0 0 0 4px rgba(31,78,121,0.12); border-color:var(--brand)}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:640px){.row{grid-template-columns:1fr}}
+    .hint{font-size:12px; color:var(--muted); margin-top:6px}
+    .actions{margin-top:18px; display:flex; align-items:center; gap:12px}
+    button.primary{
+      background:var(--ok);
+      color:#fff; border:none; border-radius:10px;
+      padding:12px 16px; font-weight:700; cursor:pointer;
+      transition: transform .04s ease, background .2s ease;
+      width:100%;
+    }
+    button.primary:hover{filter:brightness(0.98)}
+    button.primary:active{transform:translateY(1px)}
+    .status{
+      margin-top:10px; font-weight:700; text-align:center;
+      padding:10px 12px; border-radius:10px; display:none;
+    }
+    .status.ok{display:block; background: #e6f7f0; color:#0e7a4b; border:1px solid #bce7d2}
+    .status.err{display:block; background: #fdecec; color:#9f1d1d; border:1px solid #f6c2c2}
+    .aside{
+      display:flex; flex-direction:column; justify-content:space-between; height:100%;
+    }
+    .features{padding:18px 22px}
+    .features h3{margin:0 0 10px 0; font-size:18px}
+    .feat{display:flex; gap:10px; align-items:flex-start; margin:10px 0; color:var(--muted)}
+    .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); position:relative; top:7px}
+    footer{border-top:1px solid var(--border); background:var(--card); margin-top:30px}
+    footer .grid{display:grid; grid-template-columns:2fr 1fr; gap:20px}
+    @media (max-width:760px){footer .grid{grid-template-columns:1fr}}
+    small{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <img src="logo.svg" alt="GoBus logo">
+      <h1>Bus Ticket Booking System</h1>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="card">
+        <div class="pad">
+          <h2>Book your next ride</h2>
+          <p class="lead">Reliable intercity coaches across Egypt. Secure payment on arrival. No hidden fees.</p>
+
+          <form id="ticketForm" aria-label="Bus ticket booking form" novalidate>
+            <div class="row">
+              <div>
+                <label for="tripType">Trip type</label>
+                <select id="tripType" name="tripType" required>
+                  <option value="oneway" selected>One Way</option>
+                  <option value="roundtrip">Round Trip</option>
+                </select>
+              </div>
+              <div>
+                <label for="travelDate">Travel date</label>
+                <input id="travelDate" name="travelDate" type="date" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="fromCity">From city</label>
+                <select id="fromCity" name="fromCity" required>
+                  <option value="" disabled selected>Select city</option>
+                  <option>Cairo</option>
+                  <option>Giza</option>
+                  <option>Alexandria</option>
+                  <option>Hurghada</option>
+                  <option>Luxor</option>
+                  <option>Aswan</option>
+                </select>
+              </div>
+              <div>
+                <label for="fromStation">From station</label>
+                <input id="fromStation" name="fromStation" placeholder="e.g. Tahrir Terminal" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="toCity">To city</label>
+                <select id="toCity" name="toCity" required>
+                  <option value="" disabled selected>Select city</option>
+                  <option>Alexandria</option>
+                  <option>Hurghada</option>
+                  <option>Luxor</option>
+                  <option>Sharm El-Sheikh</option>
+                  <option>Mansoura</option>
+                </select>
+              </div>
+              <div>
+                <label for="toStation">To station</label>
+                <input id="toStation" name="toStation" placeholder="e.g. Hurghada Main Station" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="passengers">Passengers</label>
+                <select id="passengers" name="passengers" required>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+              <div>
+                <label for="seatNumber">Seat number</label>
+                <input id="seatNumber" name="seatNumber" placeholder="e.g. A12" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="ticketType">Ticket type</label>
+                <select id="ticketType" name="ticketType" required>
+                  <option value="" disabled selected>Select type</option>
+                  <option value="economy">Economy</option>
+                  <option value="regular">Regular</option>
+                  <option value="vip">VIP</option>
+                </select>
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="name@example.com" required />
+                <div class="hint">We’ll send your e-ticket and updates here.</div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button id="submitBtn" class="primary" type="submit">Submit</button>
+            </div>
+
+            <div id="status" class="status" role="alert" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+
+      <aside class="aside">
+        <div class="card">
+          <div class="features">
+            <h3>Why ride with us</h3>
+            <div class="feat"><span class="dot"></span> Modern AC coaches with onboard Wi‑Fi.</div>
+            <div class="feat"><span class="dot"></span> Professional drivers & daily departures.</div>
+            <div class="feat"><span class="dot"></span> Free reschedule up to 24h before departure.</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px">
+          <div class="features">
+            <h3>Travel tips</h3>
+            <div class="feat"><span class="dot"></span> Arrive 15 minutes early to board smoothly.</div>
+            <div class="feat"><span class="dot"></span> Keep your ID/passport handy at check‑in.</div>
+            <div class="feat"><span class="dot"></span> Children above 6 require a full ticket.</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap grid">
+      <div><small>© 2025 GoBus Egypt. All rights reserved.</small></div>
+      <div style="text-align:right"><small>Support: help@gobus-eg.com</small></div>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById("ticketForm");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.className = "status";
+      statusEl.textContent = "";
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      // Simple front-end validation
+      if(!payload.fromCity || !payload.toCity || !payload.email){
+        statusEl.className = "status err";
+        statusEl.textContent = "Please fill all required fields.";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Processing...";
+
+      try {
+        const res = await fetch("https://lviitctxx4.execute-api.us-east-1.amazonaws.com/dev/", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if(res.ok){
+          statusEl.className = "status ok";
+          statusEl.textContent = `✅ Booking successful. Ticket ID: ${data.ticketId || "N/A"}`;
+          form.reset();
+        }else{
+          statusEl.className = "status err";
+          statusEl.textContent = `❌ ${data.error || "Error booking ticket."}`;
+        }
+      } catch (err){
+        statusEl.className = "status err";
+        statusEl.textContent = "⚠️ Network error. Please try again.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
+      }
+    });
+  </script>
+</body>
+</html>
